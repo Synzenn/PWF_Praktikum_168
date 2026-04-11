@@ -16,6 +16,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.*')">
+                        {{ __('Product') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="url('/about')" :active="request()->is('about')">
                         {{ __('About Me') }}
                     </x-nav-link>
@@ -75,6 +79,10 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.*')">
+            {{ __('Product') }}
+        </x-responsive-nav-link>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
