@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -21,8 +22,9 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer',
             'price' => 'required|numeric',
-            'user_id' => 'required|exists:users,id',
         ]);
+
+        $validated['user_id'] = auth()->id();
 
         $product = Product::create($validated);
 
@@ -31,9 +33,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $users = User::orderBy('name')->get();
-
-        return view('product.create', compact('users'));
+        return view('product.create');
     }
 
     public function show($id)
@@ -47,11 +47,12 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        Gate::authorize('update', $product);
+
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'quantity' => 'sometimes|integer',
             'price' => 'sometimes|numeric',
-            'user_id' => 'sometimes|exists:users,id',
         ]);
 
         $product->update($validated);
@@ -61,17 +62,24 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $users = User::orderBy('name')->get();
+        Gate::authorize('update', $product);
 
-        return view('product.edit', compact('product', 'users'));
+        return view('product.edit', compact('product'));
     }
 
     public function delete($id)
     {
         $product = Product::findOrFail($id);
 
+        Gate::authorize('delete', $product);
+
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Product berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return "Product exported successfully (Admin only).";
     }
 }
