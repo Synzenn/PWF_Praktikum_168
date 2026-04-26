@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use App\Http\Requests\StoreProductRequest;
@@ -31,7 +32,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('product.create');
+        $categories = Category::all();
+
+        return view('product.create', compact('categories'));
     }
 
     public function show($id)
@@ -58,7 +61,9 @@ class ProductController extends Controller
     {
         Gate::authorize('update', $product);
 
-        return view('product.edit', compact('product'));
+        $categories = Category::all();
+
+        return view('product.edit', compact('product', 'categories'));
     }
 
     public function delete($id)

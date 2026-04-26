@@ -20,6 +20,10 @@
                         {{ __('Product') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.*')">
+                        {{ __('Category') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="url('/about')" :active="request()->is('about')">
                         {{ __('About Me') }}
                     </x-nav-link>
@@ -82,6 +86,10 @@
 
         <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.*')">
             {{ __('Product') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('category.index')" :active="request()->routeIs('category.*')">
+            {{ __('Category') }}
         </x-responsive-nav-link>
 
         <!-- Responsive Settings Options -->
